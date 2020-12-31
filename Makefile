@@ -1,13 +1,20 @@
 SOURCES = sources
 
 CONFIG_SUB_REV = 3d5db9ebe860
-BINUTILS_VER = 2.35.1
-GCC_VER = 10.2.0
-MUSL_VER = 1.2.1
-GMP_VER = 6.2.1
-MPC_VER = 1.2.1
-MPFR_VER = 4.1.0
-LINUX_VER = headers-4.19.88
+
+### BEGIN CONFIG ###
+
+TARGET := $(or $(TARGET), 'aarch64-linux-musl')
+BINUTILS_VER := $(or $(BINUTILS_VER), '2.35.1')
+GCC_VER := $(or $(GCC_VER), '10.2.0')
+MUSL_VER := $(or $(MUSL_VER), '1.2.1')
+GMP_VER := $(or $(GMP_VER), '6.2.1')
+MPC_VER := $(or $(MPC_VER), '1.2.1')
+MPFR_VER := $(or $(MPFR_VER), '4.1.0')
+ISL_VER := $(or $(ISL_VER), '0.21')
+LINUX_VER := $(or $(LINUX_VER), '5.8.5')
+
+### END CONFIG ###
 
 GNU_SITE = https://ftp.gnu.org/pub/gnu
 GCC_SITE = $(GNU_SITE)/gcc
@@ -23,14 +30,23 @@ MUSL_REPO = git://git.musl-libc.org/musl
 LINUX_SITE = https://cdn.kernel.org/pub/linux/kernel
 LINUX_HEADERS_SITE = http://ftp.barfooze.de/pub/sabotage/tarballs/
 
-DL_CMD = wget -c -O
-SHA1_CMD = sha1sum -c
+DL_CMD := $(or $(DL_CMD), wget -c -O)
+SHA1_CMD := $(or $(SHA1_CMD), sha1sum -c)
 
 COWPATCH = $(CURDIR)/cowpatch.sh
 
 HOST = $(if $(NATIVE),$(TARGET))
 BUILD_DIR = build/$(if $(HOST),$(HOST),local)/$(TARGET)
 OUTPUT = $(CURDIR)/output$(if $(HOST),-$(HOST))
+OUTPUT := $(or $$(OUTPUT), $(OUTPUT))
+
+ifneq ($(COMMON_CONFIG),)
+COMMON_CONFIG=$(COMMON_CONFIG)
+endif
+
+ifneq ($(GCC_CONFIG),)
+GCC_CONFIG=$(GCC_CONFIG)
+endif
 
 REL_TOP = ../../..
 
@@ -42,6 +58,9 @@ SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
 	$(if $(MPFR_VER),mpfr-$(MPFR_VER)) \
 	$(if $(ISL_VER),isl-$(ISL_VER)) \
 	$(if $(LINUX_VER),linux-$(LINUX_VER))
+
+# Display all vars
+$(foreach var,$(.VARIABLES),$(info $(var) = $($(var))))
 
 all:
 
