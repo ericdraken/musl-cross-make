@@ -12,7 +12,7 @@ GMP_VER := $(or $(GMP_VER), '6.2.1')
 MPC_VER := $(or $(MPC_VER), '1.2.1')
 MPFR_VER := $(or $(MPFR_VER), '4.1.0')
 ISL_VER := $(or $(ISL_VER), '0.21')
-LINUX_VER := $(or $(LINUX_VER), '5.8.5')
+LINUX_VER := $(or $(LINUX_VER), '5.10.4')
 
 ### END CONFIG ###
 
