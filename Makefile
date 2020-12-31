@@ -37,8 +37,7 @@ COWPATCH = $(CURDIR)/cowpatch.sh
 
 HOST = $(if $(NATIVE),$(TARGET))
 BUILD_DIR = build/$(if $(HOST),$(HOST),local)/$(TARGET)
-OUTPUT = $(CURDIR)/output$(if $(HOST),-$(HOST))
-OUTPUT := $(or $$(OUTPUT), $(OUTPUT))
+OUTPUT := $(or $(OUTPUT), $(CURDIR)/output$(if $(HOST),-$(HOST)))
 
 ifneq ($(COMMON_CONFIG),)
 COMMON_CONFIG=$(COMMON_CONFIG)
