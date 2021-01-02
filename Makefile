@@ -38,14 +38,8 @@ COWPATCH = $(CURDIR)/cowpatch.sh
 HOST = $(if $(NATIVE),$(TARGET))
 BUILD_DIR = build/$(if $(HOST),$(HOST),local)/$(TARGET)
 OUTPUT := $(or $(OUTPUT), $(CURDIR)/output$(if $(HOST),-$(HOST)))
-
-ifneq ($(COMMON_CONFIG),)
-COMMON_CONFIG=$(COMMON_CONFIG)
-endif
-
-ifneq ($(GCC_CONFIG),)
-GCC_CONFIG=$(GCC_CONFIG)
-endif
+COMMON_CONFIG := $(or $(COMMON_CONFIG),)
+GCC_CONFIG := $(or $(GCC_CONFIG),)
 
 REL_TOP = ../../..
 
